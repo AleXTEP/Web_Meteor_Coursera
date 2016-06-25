@@ -117,8 +117,9 @@ if (Meteor.isClient) {
        // (i.e. the user) into the database?? certainly not.
        // push adds the message to the end of the array
        var actual_time = new Date();
+       var actual_time = actual_time.toLocaleDateString() + "   " +  actual_time.toLocaleTimeString();
 
-       msgs.push({text: event.target.chat.value, ava:  user.profile.avatar, time: actual_time, author: Meteor.userId()});
+       msgs.push({text: event.target.chat.value, ava:  user.profile.avatar, time: actual_time , author: Meteor.userId()});
 
        // reset the form
        event.target.chat.value = "";
