@@ -1,0 +1,114 @@
+<head>
+  <title>minstant</title>
+</head>
+
+<body>
+</body>
+
+<!-- this is the main template used by iron:router to build the page -->
+<template name="ApplicationLayout">
+	{{> yield "header"}}
+
+	<div class="container">
+	{{> yield "main"}}
+	</div>
+</template>
+
+<!-- top level template for the nav bar -->
+<template name="navbar">
+<nav class="navbar navbar-light" style="background-color: 	#C0C0C0 ;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">
+        Minstant!
+      </a>
+    </div>
+    <div class="nav navbar-nav">
+    {{> loginButtons}}
+</div>
+  </div>
+</nav>
+</template>
+
+<!-- Top level template for the lobby page -->
+<template name="lobby_page">
+	{{> available_user_list}}
+</template>
+
+<!-- display a list of users -->
+<template name="available_user_list">
+	<h2>Choose someone to chat with:</h2>
+	<div class="row">
+	{{#each users}}
+	{{> available_user}}
+	{{/each}}
+</div>
+</template>
+
+<!-- display an individual user -->
+<template name="available_user">
+	<div class="col-md-2">
+		<div class="user_avatar">
+			{{#if isMyUser _id}}
+			<div class="bg-success">{{getUsername _id}} (YOU)
+				<br/>
+				<img src="/{{profile.avatar}}" class="avatar_img">
+			</div>
+			{{else}}
+			<a href="/chat/{{_id}}">
+				{{getUsername _id}}
+				<br/>
+				<img src="/{{profile.avatar}}" class="avatar_img">
+			</a>
+			{{/if}}
+		</div>
+	</div>
+</template>
+
+
+<!-- Top level template for the chat page -->
+<template name="chat_page">
+	<h2>Type in the box below to send a message!</h2>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="well">
+			{{#each messages}}
+                {{> chat_message}}
+            {{/each}}
+			</div>
+		</div>
+	</div>
+    <div class="row">
+		<div class="col-md-12">
+			<form class="js-send-chat ">
+			<input class="input message-box" type="text" name="chat" placeholder="type a message here...">
+			<button class="btn btn-default">send</button>
+		    </form>
+		</div>
+
+	</div>
+    <div class="col-md-4 faces">
+        {{#each emotions}}
+            <a href="#" class="js-emoticon">{{{parseEmoticons  this}}}</a>
+        {{/each}}
+    </div>
+
+</template>
+
+<!-- simple template that displays a message -->
+<template name="chat_message">
+    {{#if isMyUser author}}
+    <div class="msg1">
+        <img src="/{{ava}}" class="circular">
+        <span style="margin-left: 20px">{{{parseEmoticons  text}}}</span>
+        <div style="margin-left: 20px; text-align: right; font-size:10px; color:green">{{time}}</div>
+    </div>
+    {{else}}
+    <div class="msg2" align = "right">
+        <span style="margin-right: 20px; ">{{{parseEmoticons  text}}}</span>
+        <img src="/{{ava}}" class="circular">
+        <div style="margin-right: 20px; text-align: left; font-size:10px; color:red">{{time}}</div>
+    </div>
+    {{/if}}
+<br>
+</template>
